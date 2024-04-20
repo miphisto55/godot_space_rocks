@@ -24,7 +24,6 @@ vec4 colorize(float c, float a) {
 
 void fragment() {
 	vec4 textureColor = texture(noise_texture, UV - elapsed / speed);
-	//COLOR = textureColor;
 	COLOR.r = gradient(UV);
 	float clampedIntensity = clamp(intensity, 0.8f, 10.0f);
 	COLOR.r = clamp(COLOR.r * textureColor.r * clampedIntensity * 10.0f, 0.0f, 1.0f);
