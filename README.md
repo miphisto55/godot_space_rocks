@@ -1,30 +1,30 @@
 # godot_space_rocks
 Game has controller support/mappings and I highly recommend using one if you have one:
 
-Thrust Forward:
-Keyboard - W
-PS Controller - X
-Xbox Controller - A
+Thrust Forward: <br>
+Keyboard - W <br>
+PS Controller - X <br>
+Xbox Controller - A <br>
 
-Turn Left:
-Keyboard - A
-PS Controller - C-pad LEFT
-Xbox Controller - C-pad LEFT
+Turn Left: <br>
+Keyboard - A <br>
+PS Controller - C-pad LEFT <br>
+Xbox Controller - C-pad LEFT <br>
 
-Turn Right:
-Keyboard - D
-PS Controller - C-pad RIGHT
-Xbox Controller - C-pad RIGHT
+Turn Right: <br>
+Keyboard - D <br>
+PS Controller - C-pad RIGHT <br>
+Xbox Controller - C-pad RIGHT <br>
 
-Strafe Left:
-Keyboard - Q
-PS Controller - L-Trigger
-Xbox Controller - L-Trigger
+Strafe Left: <br>
+Keyboard - Q <br>
+PS Controller - L-Trigger <br>
+Xbox Controller - L-Trigger <br>
 
-Strafe Right:
-Keyboard - E
-PS Controller - R-Trigger
-Xbox Controller - R-Trigger
+Strafe Right: <br>
+Keyboard - E <br>
+PS Controller - R-Trigger <br>
+Xbox Controller - R-Trigger <br>
 
 Esc - Pause (half-broken, too lazy to care to fix it, but I know what the issue is)
 
