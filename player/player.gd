@@ -52,8 +52,9 @@ func set_shield(value):
 func _ready():
 	change_state(PlayerState.ALIVE)
 	screensize = get_viewport_rect().size
-	$GunCooldown.wait_time = fire_rate
+	set_player_default_properties()
 	radius = int((ship_sprite.texture.get_size().x / 2) * ship_sprite.scale.x)
+	SignalManager.powerup_attack_speed_pickup.connect(powerup_pickup)
 	
 func _process(delta):
 	get_input()
@@ -121,6 +122,16 @@ func reset():
 	lives = 3
 	change_state(PlayerState.ALIVE)
 
+func powerup_pickup(powerup):
+	match powerup:
+		Enums.POWERUPS.ATTACK_SPEED:
+			$GunCooldown.wait_time = fire_rate / 2
+			$PowerupSound.play()
+			$PowerupDurationTimer.start()
+
+func set_player_default_properties():
+	$GunCooldown.wait_time = fire_rate
+	
 func change_state(new_state):
 	match new_state:
 		PlayerState.INIT:
@@ -171,3 +182,7 @@ func _on_area_2d_area_entered(area):
 	if area.is_in_group("enemy_bullet"):
 		$AnimationPlayer.play("flash")
 		$HitMarkerSound.play()
+
+
+func _on_powerup_timer_timeout():
+	set_player_default_properties()

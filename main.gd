@@ -4,6 +4,7 @@ extends Node
 @export var rock_follow_path: PathFollow2D
 @export var player: RigidBody2D
 @export var enemy_scene: PackedScene
+@export var powerups: Array[PackedScene]
 
 var level = 0
 var score = 0
@@ -97,3 +98,10 @@ func _on_enemy_timer_timeout():
 	e.target = player
 	var enemy_spawn_timer_countdown = 15 - level
 	$EnemyTimer.start(enemy_spawn_timer_countdown)
+
+
+func _on_powerup_spawn_timer_timeout():
+	var p = powerups[randi_range(0,powerups.size()-1)].instantiate()
+	add_child(p)
+	p.position.x = randi_range(50, screensize.x - 50)
+	p.position.y = randi_range(-50, screensize.y + 50)

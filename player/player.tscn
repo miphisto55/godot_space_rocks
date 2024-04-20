@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://wrvxhfp5np7a"]
+[gd_scene load_steps=30 format=3 uid="uid://wrvxhfp5np7a"]
 
 [ext_resource type="Texture2D" uid="uid://cbjn32wirrghq" path="res://assets/player_ship.png" id="1_blvdv"]
 [ext_resource type="Script" path="res://player/player.gd" id="1_ovnp0"]
@@ -12,6 +12,7 @@
 [ext_resource type="Shader" path="res://player/shield.gdshader" id="10_ek4le"]
 [ext_resource type="AudioStream" uid="uid://dj2isq6gei0ow" path="res://assets/sounds/invul_sound.mp3" id="12_aakr5"]
 [ext_resource type="Script" path="res://player/shield.gd" id="12_o8mja"]
+[ext_resource type="AudioStream" uid="uid://r361mloqejnq" path="res://assets/sounds/powerup_sound.mp3" id="13_ptj01"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_01rei"]
 radius = 31.1448
@@ -293,9 +294,17 @@ color_ramp = SubResource("Gradient_nhwsi")
 stream = ExtResource("12_aakr5")
 volume_db = -10.0
 
+[node name="PowerupDurationTimer" type="Timer" parent="."]
+wait_time = 8.0
+
+[node name="PowerupSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_ptj01")
+volume_db = -10.0
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="shield_changed" from="." to="Area2D/Shield" method="update_shield_in_shader"]
 [connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]
 [connection signal="timeout" from="InvulnerabilityTimer" to="." method="_on_invulnerability_timer_timeout"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_entered" from="Area2D" to="Area2D/Shield" method="_on_area_2d_area_entered"]
+[connection signal="timeout" from="PowerupDurationTimer" to="." method="_on_powerup_timer_timeout"]

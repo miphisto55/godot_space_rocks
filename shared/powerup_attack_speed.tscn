@@ -1,0 +1,60 @@
+[gd_scene load_steps=12 format=3 uid="uid://cd22dh1sfwa53"]
+
+[ext_resource type="Script" path="res://shared/powerup_attack_speed.gd" id="1_jr6y1"]
+[ext_resource type="Shader" path="res://shared/powerup_attack_speed.gdshader" id="2_0kvsr"]
+[ext_resource type="Texture2D" uid="uid://53kox58owwmx" path="res://assets/powerup_attack_speed.png" id="2_ycnh2"]
+[ext_resource type="Shader" path="res://shared/stars_particles.gdshader" id="4_lg0ym"]
+[ext_resource type="Texture2D" uid="uid://36vvpuclhoc3" path="res://assets/corona.png" id="5_ur44o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1rabv"]
+size = Vector2(64, 64)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qc8sc"]
+shader = ExtResource("2_0kvsr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mqlap"]
+shader = ExtResource("4_lg0ym")
+
+[sub_resource type="Curve" id="Curve_tro0h"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0223266), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_88ti5"]
+curve = SubResource("Curve_tro0h")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oba70"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(55, 55, 1)
+gravity = Vector3(0, -98, 0)
+scale_min = 0.03
+scale_max = 0.07
+scale_curve = SubResource("CurveTexture_88ti5")
+
+[node name="PowerupAttackSpeed" type="Area2D" groups=["powerups"]]
+script = ExtResource("1_jr6y1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1rabv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ycnh2")
+
+[node name="SpriteInit" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.337003)
+material = SubResource("ShaderMaterial_qc8sc")
+texture = ExtResource("2_ycnh2")
+
+[node name="Lifetime" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("ShaderMaterial_mqlap")
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_oba70")
+texture = ExtResource("5_ur44o")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Lifetime" to="." method="_on_lifetime_timeout"]
