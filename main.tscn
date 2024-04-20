@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dc72n51s0oip2"]
+[gd_scene load_steps=14 format=3 uid="uid://dc72n51s0oip2"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_5cvw1"]
 [ext_resource type="Texture2D" uid="uid://d1tg7yrsbsug7" path="res://assets/space_background.png" id="1_oa6ya"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://cto11h57715dh" path="res://assets/sounds/explosion.wav" id="7_gbrmd"]
 [ext_resource type="AudioStream" uid="uid://xdsri7bfexwh" path="res://assets/sounds/levelup.ogg" id="8_bg27g"]
 [ext_resource type="AudioStream" uid="uid://b478k1vtwxuop" path="res://assets/sounds/Coda and Cancel - Turkoid Mix.mp3" id="9_y2ni5"]
+[ext_resource type="PackedScene" uid="uid://cwryt6yfg1p60" path="res://shared/post_processing.tscn" id="12_keikt"]
 
 [sub_resource type="Curve2D" id="Curve2D_rq57f"]
 _data = {
@@ -64,6 +65,8 @@ volume_db = -6.0
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9_y2ni5")
 volume_db = -15.0
+
+[node name="PostProcessing" parent="." instance=ExtResource("12_keikt")]
 
 [connection signal="dead" from="Player" to="." method="game_over"]
 [connection signal="lives_changed" from="Player" to="HUD" method="update_lives"]
