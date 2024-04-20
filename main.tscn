@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://dc72n51s0oip2"]
+[gd_scene load_steps=13 format=3 uid="uid://dc72n51s0oip2"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_5cvw1"]
 [ext_resource type="Texture2D" uid="uid://d1tg7yrsbsug7" path="res://assets/space_background.png" id="1_oa6ya"]
 [ext_resource type="PackedScene" uid="uid://84vs36g5n5sc" path="res://obstacles/rock.tscn" id="2_6bjo6"]
 [ext_resource type="PackedScene" uid="uid://wrvxhfp5np7a" path="res://player/player.tscn" id="2_i65jl"]
 [ext_resource type="PackedScene" uid="uid://c7ikl8lty5v2t" path="res://enemies/enemy.tscn" id="3_fsd8j"]
+[ext_resource type="PackedScene" uid="uid://cd22dh1sfwa53" path="res://shared/powerup_attack_speed.tscn" id="4_qwckn"]
 [ext_resource type="PackedScene" uid="uid://brh6mnbpg888j" path="res://shared/hud.tscn" id="5_0xvba"]
 [ext_resource type="PackedScene" uid="uid://dh3v86eidqtcw" path="res://shared/stars_particles.tscn" id="5_egmoy"]
 [ext_resource type="AudioStream" uid="uid://cto11h57715dh" path="res://assets/sounds/explosion.wav" id="7_gbrmd"]
@@ -24,6 +25,7 @@ rock_scene = ExtResource("2_6bjo6")
 rock_follow_path = NodePath("RockPath/RockSpawn")
 player = NodePath("Player")
 enemy_scene = ExtResource("3_fsd8j")
+powerups = Array[PackedScene]([ExtResource("4_qwckn")])
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(577, 325)
@@ -47,6 +49,10 @@ position = Vector2(32, 18)
 [node name="EnemyTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="PowerupSpawnTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
 [node name="ExplosionSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_gbrmd")
 volume_db = -10.0
@@ -64,4 +70,5 @@ volume_db = -15.0
 [connection signal="shield_changed" from="Player" to="HUD" method="update_shield"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
 [connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
+[connection signal="timeout" from="PowerupSpawnTimer" to="." method="_on_powerup_spawn_timer_timeout"]
 [connection signal="finished" from="Music" to="." method="play_music"]
