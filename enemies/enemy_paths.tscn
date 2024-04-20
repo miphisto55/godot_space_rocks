@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://0kpue81g56kw"]
+
+[sub_resource type="Curve2D" id="Curve2D_h0wep"]
+_data = {
+"points": PackedVector2Array(79.1704, -109.161, 0, 0, -68, 24, 0.453457, -146.235, -0.453457, 146.235, 166, 262, -49.0942, -141.998, 49.0942, 141.998, 61.9511, 566.694, -244.648, -28.7422, 244.648, 28.7422, 533.732, 589.734, -126.718, 54.7977, 126.718, -54.7977, 1068, 594, 94.6061, 131.018, -94.6061, -131.018, 970, 302, 210.984, 96.2588, -210.984, -96.2588, 1043.47, 55.1476, 110.862, 107.19, -110.862, -107.19, 506, 64, -43.8907, -10.4697, 43.8907, 10.4697, -22.9172, 85.7601)
+}
+point_count = 9
+
+[sub_resource type="Curve2D" id="Curve2D_05rsc"]
+_data = {
+"points": PackedVector2Array(170.161, -14.1835, -170.161, 14.1835, 1062.75, -64.6533, 175.99, 1.87971, -175.99, -1.87971, 729.614, 601.827, 253.857, 14.7121, -253.857, -14.7121, 275.386, 58.9445, 0, 0, 0, 0, -20.8345, 639.814)
+}
+point_count = 4
+
+[sub_resource type="Curve2D" id="Curve2D_vq1gj"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -28.0144, 375.722, 163.248, 445.769, -163.248, -445.769, 264.439, 334.843, 208.733, 494.257, -208.733, -494.257, 574.485, 332.155, 212.947, 474.301, -212.947, -474.301, 868.554, 327.295, 0, 0, 0, 0, 1162.41, 342.434)
+}
+point_count = 5
+
+[sub_resource type="Curve2D" id="Curve2D_4cbby"]
+_data = {
+"points": PackedVector2Array(-256.447, -146.747, 256.447, 146.747, 574.352, -29.8675, -349.98, -3.73807, 349.98, 3.73807, 883.087, 277.447, 208.009, 0.221595, -208.009, -0.221595, 589.515, 610.331, -10.2637, 211.902, 10.2637, -211.902, 233.103, 272.505, 0, 0, 0, 0, 574.352, -29.8675)
+}
+point_count = 5
+
+[node name="EnemyPaths" type="Node"]
+
+[node name="Path1" type="Path2D" parent="."]
+rotation = -0.0106804
+curve = SubResource("Curve2D_h0wep")
+
+[node name="Path2" type="Path2D" parent="."]
+rotation = -0.0106804
+curve = SubResource("Curve2D_05rsc")
+
+[node name="Path3" type="Path2D" parent="."]
+rotation = -0.0106804
+curve = SubResource("Curve2D_vq1gj")
+
+[node name="Path4" type="Path2D" parent="."]
+position = Vector2(-8, 20)
+rotation = -0.0106804
+curve = SubResource("Curve2D_4cbby")

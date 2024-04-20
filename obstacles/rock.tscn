@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://84vs36g5n5sc"]
+
+[ext_resource type="Script" path="res://obstacles/rock.gd" id="1_2d6nh"]
+[ext_resource type="Texture2D" uid="uid://b0mx31wi03ahe" path="res://assets/rock.png" id="1_4b5ct"]
+[ext_resource type="PackedScene" uid="uid://cjrqjsrd8np6v" path="res://shared/explosion.tscn" id="3_lwpna"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_18tra"]
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kcgt8"]
+radius = 73.9797
+
+[node name="Rock" type="RigidBody2D" node_paths=PackedStringArray("rock_sprite", "collisionShape", "explosion") groups=["rocks"]]
+physics_material_override = SubResource("PhysicsMaterial_18tra")
+linear_damp_mode = 1
+angular_damp_mode = 1
+script = ExtResource("1_2d6nh")
+rock_sprite = NodePath("Sprite2D")
+collisionShape = NodePath("CollisionShape2D")
+explosion = NodePath("Explosion")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_kcgt8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_4b5ct")
+
+[node name="Explosion" parent="." instance=ExtResource("3_lwpna")]
+visible = false

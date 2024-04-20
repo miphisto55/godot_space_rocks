@@ -1,0 +1,38 @@
+[gd_scene load_steps=8 format=3 uid="uid://dh3v86eidqtcw"]
+
+[ext_resource type="Shader" path="res://shared/stars_particles.gdshader" id="1_5fdu3"]
+[ext_resource type="Script" path="res://stars_particles.gd" id="1_nseyg"]
+[ext_resource type="Texture2D" uid="uid://36vvpuclhoc3" path="res://assets/corona.png" id="2_osadx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ahuqi"]
+shader = ExtResource("1_5fdu3")
+
+[sub_resource type="Curve" id="Curve_fq6p1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.997015, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_dgyfp"]
+curve_x = SubResource("Curve_fq6p1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_voto6"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(575, 500, 1)
+directional_velocity_min = -100.0
+directional_velocity_max = 0.0
+directional_velocity_curve = SubResource("CurveXYZTexture_dgyfp")
+gravity = Vector3(0, 0, 0)
+scale_min = 0.02
+scale_max = 0.03
+hue_variation_min = -0.1
+hue_variation_max = 0.1
+
+[node name="StarsParticles" type="GPUParticles2D"]
+material = SubResource("ShaderMaterial_ahuqi")
+position = Vector2(835, 327)
+amount = 500
+process_material = SubResource("ParticleProcessMaterial_voto6")
+texture = ExtResource("2_osadx")
+lifetime = 25.0
+preprocess = 25.0
+script = ExtResource("1_nseyg")

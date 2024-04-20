@@ -1,0 +1,284 @@
+[gd_scene load_steps=28 format=3 uid="uid://wrvxhfp5np7a"]
+
+[ext_resource type="Texture2D" uid="uid://cbjn32wirrghq" path="res://assets/player_ship.png" id="1_blvdv"]
+[ext_resource type="Script" path="res://player/player.gd" id="1_ovnp0"]
+[ext_resource type="PackedScene" uid="uid://drvia87jtgsqh" path="res://weapons/bullet/bullet.tscn" id="2_1vxg6"]
+[ext_resource type="PackedScene" uid="uid://cjrqjsrd8np6v" path="res://shared/explosion.tscn" id="4_bu2gk"]
+[ext_resource type="Texture2D" uid="uid://dxtwsveg1csg" path="res://assets/laser_green.png" id="4_vvu6i"]
+[ext_resource type="AudioStream" uid="uid://wdrnfh4jdlby" path="res://assets/sounds/laser.ogg" id="5_ohlpb"]
+[ext_resource type="AudioStream" uid="uid://5ep5ftkcxrk1" path="res://assets/sounds/engine.ogg" id="6_y37vl"]
+[ext_resource type="AudioStream" uid="uid://s2j37w7g5478" path="res://assets/sounds/hitmarker.mp3" id="7_ptsvm"]
+[ext_resource type="Texture2D" uid="uid://36vvpuclhoc3" path="res://assets/corona.png" id="9_a13rs"]
+[ext_resource type="Shader" path="res://player/shield.gdshader" id="10_ek4le"]
+[ext_resource type="Script" path="res://player/shield.gd" id="12_o8mja"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_01rei"]
+radius = 31.1448
+
+[sub_resource type="Animation" id="Animation_qvxwe"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_w1iwp"]
+resource_name = "flash"
+length = 0.17
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.04, 0.08, 0.12, 0.16),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.87451, 0, 0.160784, 1), Color(1, 1, 1, 1), Color(0.87451, 0, 0.160784, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_utn0n"]
+resource_name = "invul"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.1, 1.2, 1.3, 1.4, 1.4001, 1.5, 1.5001, 1.6, 1.7, 1.8, 1.9, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cq4xk"]
+_data = {
+"RESET": SubResource("Animation_qvxwe"),
+"flash": SubResource("Animation_w1iwp"),
+"invul": SubResource("Animation_utn0n")
+}
+
+[sub_resource type="Curve" id="Curve_7v33k"]
+_data = [Vector2(0.00275482, 1), 0.0, 0.0, 0, 0, Vector2(0.997245, 0.026738), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_0yf8y"]
+offsets = PackedFloat32Array(0, 0.167164, 0.414925, 1)
+colors = PackedColorArray(0.992647, 0.864367, 0.0659533, 1, 0.998862, 0.706234, 0.391533, 1, 0.903118, 0, 0.239483, 1, 0.447059, 0, 0.0705882, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_841dl"]
+radius = 31.0161
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_023ep"]
+noise_type = 0
+frequency = 0.0199
+fractal_type = 2
+fractal_lacunarity = 1.705
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7b38o"]
+seamless = true
+noise = SubResource("FastNoiseLite_023ep")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jbdfs"]
+shader = ExtResource("10_ek4le")
+shader_parameter/shieldValue = 1.0
+shader_parameter/elapsed = 0.0
+shader_parameter/shieldRadius = 0.18
+shader_parameter/intensity = 0.8
+shader_parameter/layers = 10.0
+shader_parameter/speed = 10.0
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_7b38o")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bhomk"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_5squc"]
+_data = [Vector2(0.00275482, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0197862), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_v1ti4"]
+colors = PackedColorArray(1, 0.802593, 0.418423, 1, 0.339184, 0.551145, 0.994007, 1)
+
+[sub_resource type="Gradient" id="Gradient_v4l03"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.64159, 0.744687, 1)
+
+[sub_resource type="Gradient" id="Gradient_nhwsi"]
+colors = PackedColorArray(0, 0, 0, 1, 0.869667, 0.868303, 0.99869, 1)
+
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("ship_sprite", "playerCollisionShape", "muzzle") groups=["Player"]]
+max_contacts_reported = 1
+contact_monitor = true
+linear_damp = 1.0
+angular_damp = 5.0
+script = ExtResource("1_ovnp0")
+ship_sprite = NodePath("Sprite2D")
+playerCollisionShape = NodePath("CollisionShape2D")
+bullet_scene = ExtResource("2_1vxg6")
+muzzle = NodePath("Muzzle")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_blvdv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_01rei")
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(50, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Muzzle"]
+position = Vector2(195, -27)
+scale = Vector2(5, 0.1)
+texture = ExtResource("4_vvu6i")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Muzzle"]
+position = Vector2(195, 26)
+scale = Vector2(5, 0.1)
+texture = ExtResource("4_vvu6i")
+
+[node name="GunCooldown" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="Explosion" parent="." instance=ExtResource("4_bu2gk")]
+visible = false
+
+[node name="InvulnerabilityTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="LaserSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ohlpb")
+volume_db = -15.0
+
+[node name="EngineSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_y37vl")
+volume_db = -15.0
+
+[node name="HitMarkerSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_ptsvm")
+volume_db = -10.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cq4xk")
+}
+
+[node name="ExhaustParticles" type="CPUParticles2D" parent="."]
+show_behind_parent = true
+position = Vector2(-28, 0)
+rotation = 3.14159
+amount = 25
+lifetime = 0.1
+local_coords = true
+emission_shape = 3
+emission_rect_extents = Vector2(1, 5)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 400.0
+scale_amount_max = 8.0
+scale_amount_curve = SubResource("Curve_7v33k")
+color_ramp = SubResource("Gradient_0yf8y")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="AreaCollisionShape" type="CollisionShape2D" parent="Area2D"]
+visible = false
+shape = SubResource("CircleShape2D_841dl")
+
+[node name="Shield" type="Sprite2D" parent="Area2D" node_paths=PackedStringArray("shaderTimer")]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_jbdfs")
+position = Vector2(0, 1)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("NoiseTexture2D_7b38o")
+script = ExtResource("12_o8mja")
+shaderTimer = NodePath("../ShaderResponseTimer")
+
+[node name="ShaderResponseTimer" type="Timer" parent="Area2D"]
+wait_time = 0.2
+one_shot = true
+
+[node name="FlarePrimary" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_bhomk")
+position = Vector2(41, 1)
+emitting = false
+amount = 10
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+texture = ExtResource("9_a13rs")
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 200.0
+initial_velocity_max = 600.0
+linear_accel_min = -2000.0
+linear_accel_max = -2000.0
+scale_amount_min = 0.2
+scale_amount_max = 0.3
+scale_amount_curve = SubResource("Curve_5squc")
+color_ramp = SubResource("Gradient_v1ti4")
+
+[node name="FlarePrimary2" type="CPUParticles2D" parent="FlarePrimary"]
+material = SubResource("CanvasItemMaterial_bhomk")
+rotation = 1.0472
+emitting = false
+amount = 10
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+texture = ExtResource("9_a13rs")
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 400.0
+linear_accel_min = -2000.0
+linear_accel_max = -2000.0
+scale_amount_min = 0.2
+scale_amount_max = 0.3
+scale_amount_curve = SubResource("Curve_5squc")
+color_ramp = SubResource("Gradient_v4l03")
+
+[node name="FlarePrimary3" type="CPUParticles2D" parent="FlarePrimary"]
+material = SubResource("CanvasItemMaterial_bhomk")
+rotation = -1.0472
+emitting = false
+amount = 10
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+texture = ExtResource("9_a13rs")
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 400.0
+linear_accel_min = -2000.0
+linear_accel_max = -2000.0
+scale_amount_min = 0.2
+scale_amount_max = 0.3
+scale_amount_curve = SubResource("Curve_5squc")
+color_ramp = SubResource("Gradient_nhwsi")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="shield_changed" from="." to="Area2D/Shield" method="update_shield_in_shader"]
+[connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]
+[connection signal="timeout" from="InvulnerabilityTimer" to="." method="_on_invulnerability_timer_timeout"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Area2D" to="Area2D/Shield" method="_on_area_2d_area_entered"]
