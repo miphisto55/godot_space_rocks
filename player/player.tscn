@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://wrvxhfp5np7a"]
+[gd_scene load_steps=29 format=3 uid="uid://wrvxhfp5np7a"]
 
 [ext_resource type="Texture2D" uid="uid://cbjn32wirrghq" path="res://assets/player_ship.png" id="1_blvdv"]
 [ext_resource type="Script" path="res://player/player.gd" id="1_ovnp0"]
@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://s2j37w7g5478" path="res://assets/sounds/hitmarker.mp3" id="7_ptsvm"]
 [ext_resource type="Texture2D" uid="uid://36vvpuclhoc3" path="res://assets/corona.png" id="9_a13rs"]
 [ext_resource type="Shader" path="res://player/shield.gdshader" id="10_ek4le"]
+[ext_resource type="AudioStream" uid="uid://dj2isq6gei0ow" path="res://assets/sounds/invul_sound.mp3" id="12_aakr5"]
 [ext_resource type="Script" path="res://player/shield.gd" id="12_o8mja"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_01rei"]
@@ -61,6 +62,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1), Color(1, 1, 1, 0.207843), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InvulSound:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.9),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cq4xk"]
@@ -275,6 +288,10 @@ scale_amount_min = 0.2
 scale_amount_max = 0.3
 scale_amount_curve = SubResource("Curve_5squc")
 color_ramp = SubResource("Gradient_nhwsi")
+
+[node name="InvulSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_aakr5")
+volume_db = -10.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="shield_changed" from="." to="Area2D/Shield" method="update_shield_in_shader"]
