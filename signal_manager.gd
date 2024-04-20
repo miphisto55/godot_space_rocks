@@ -2,3 +2,5 @@ extends Node
 
 signal change_score
 signal powerup_attack_speed_pickup
+signal toggle_crt_on
+signal toggle_crt_off

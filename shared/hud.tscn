@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://brh6mnbpg888j"]
+[gd_scene load_steps=10 format=3 uid="uid://brh6mnbpg888j"]
 
 [ext_resource type="Script" path="res://shared/hud.gd" id="1_tebbe"]
 [ext_resource type="FontFile" uid="uid://cy4pf8o4gg68h" path="res://assets/kenvector_future_thin.ttf" id="1_v5j0d"]
@@ -8,10 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://brnhh4lwnjbgm" path="res://assets/bar_glass_200.png" id="4_ca8qc"]
 [ext_resource type="Texture2D" uid="uid://cwuk02cb6bt6m" path="res://assets/play_button_h.png" id="4_h0p17"]
 [ext_resource type="Texture2D" uid="uid://bpln7hq7rf048" path="res://assets/bar_green_200.png" id="5_e8qar"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_ilj4t"]
-font = ExtResource("1_v5j0d")
-font_size = 64
 
 [sub_resource type="LabelSettings" id="LabelSettings_xl5n2"]
 font = ExtResource("1_v5j0d")
@@ -36,12 +32,16 @@ theme_override_constants/margin_bottom = 20
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="ScoreLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer"]
+clip_contents = false
 layout_mode = 2
-size_flags_horizontal = 10
-size_flags_vertical = 1
-text = "0"
-label_settings = SubResource("LabelSettings_ilj4t")
+size_flags_horizontal = 3
+theme_override_fonts/normal_font = ExtResource("1_v5j0d")
+theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
+text = "[center][rainbow][wave amp=20.0 freq=8.0 connected=1]0[/wave][/rainbow][/center]
+"
+fit_content = true
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -79,14 +79,18 @@ texture = ExtResource("2_b0tkr")
 stretch_mode = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 14
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = -13.5
-offset_bottom = 13.5
+offset_left = -243.5
+offset_top = -118.5
+offset_right = 243.5
+offset_bottom = 118.5
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 4
 theme_override_constants/separation = 100
 
 [node name="Message" type="Label" parent="VBoxContainer"]
@@ -94,6 +98,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Space Rocks!"
 label_settings = SubResource("LabelSettings_xl5n2")
+horizontal_alignment = 1
 
 [node name="StartButton" type="TextureButton" parent="VBoxContainer"]
 layout_mode = 2
@@ -101,5 +106,14 @@ size_flags_horizontal = 4
 texture_normal = ExtResource("3_gutv2")
 texture_hover = ExtResource("4_h0p17")
 
+[node name="ToggleCrt" type="Button" parent="."]
+offset_left = 737.0
+offset_top = 394.0
+offset_right = 888.0
+offset_bottom = 425.0
+toggle_mode = true
+text = "Toggle CRT Shader"
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="toggled" from="ToggleCrt" to="." method="_on_button_toggled"]

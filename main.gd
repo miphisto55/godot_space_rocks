@@ -13,6 +13,8 @@ var screensize = Vector2.ZERO
 
 func _ready():
 	screensize = get_viewport().get_visible_rect().size
+	SignalManager.toggle_crt_on.connect(_on_crt_toggle_on)
+	SignalManager.toggle_crt_off.connect(_on_crt_toggle_off)
 
 func _process(delta):
 	if not playing:
@@ -105,3 +107,9 @@ func _on_powerup_spawn_timer_timeout():
 	add_child(p)
 	p.position.x = randi_range(50, screensize.x - 50)
 	p.position.y = randi_range(-50, screensize.y + 50)
+
+func _on_crt_toggle_on():
+	$PostProcessing.show()
+	
+func _on_crt_toggle_off():
+	$PostProcessing.hide()

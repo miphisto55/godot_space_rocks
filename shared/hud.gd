@@ -3,7 +3,7 @@ extends CanvasLayer
 signal start_game
 
 @onready var lives_counter: Array[Node] = $MarginContainer/HBoxContainer/LivesCounter.get_children()
-@onready var score_label: Label = $MarginContainer/HBoxContainer/ScoreLabel
+@onready var score_label: RichTextLabel = $MarginContainer/HBoxContainer/ScoreLabel
 @onready var message: Label = $VBoxContainer/Message
 @onready var start_button: TextureButton = $VBoxContainer/StartButton
 @onready var shield_bar: TextureProgressBar = $MarginContainer/HBoxContainer/ShieldBar
@@ -34,7 +34,7 @@ func show_message(text):
 	
 func update_score(value):
 	score += value
-	score_label.text = str(score)
+	score_label.text = "[center][rainbow][wave amp=20.0 freq=8.0 connected=1]" + str(score) + "[/wave][/rainbow][/center]"
 	
 func update_lives(value):
 	for item in 3:
@@ -47,6 +47,7 @@ func game_over():
 	show_message("Game Over!")
 	await $Timer.timeout
 	start_button.show()
+	$ToggleCrt.show()
 
 
 func _on_timer_timeout():
@@ -56,6 +57,16 @@ func _on_timer_timeout():
 
 func _on_start_button_pressed():
 	start_button.hide()
+	$ToggleCrt.hide()
 	score = 0
 	update_score(score)
 	start_game.emit()
+
+
+func _on_button_toggled(toggle):
+	if toggle:
+		print("Toggle off")
+		SignalManager.toggle_crt_off.emit()
+	else:
+		print("Toggle on")
+		SignalManager.toggle_crt_on.emit()
