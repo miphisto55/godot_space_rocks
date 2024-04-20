@@ -1,0 +1,77 @@
+[gd_scene load_steps=14 format=3 uid="uid://dc72n51s0oip2"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_5cvw1"]
+[ext_resource type="Texture2D" uid="uid://d1tg7yrsbsug7" path="res://assets/space_background.png" id="1_oa6ya"]
+[ext_resource type="PackedScene" uid="uid://84vs36g5n5sc" path="res://obstacles/rock.tscn" id="2_6bjo6"]
+[ext_resource type="PackedScene" uid="uid://wrvxhfp5np7a" path="res://player/player.tscn" id="2_i65jl"]
+[ext_resource type="PackedScene" uid="uid://c7ikl8lty5v2t" path="res://enemies/enemy.tscn" id="3_fsd8j"]
+[ext_resource type="PackedScene" uid="uid://cd22dh1sfwa53" path="res://shared/powerup_attack_speed.tscn" id="4_qwckn"]
+[ext_resource type="PackedScene" uid="uid://brh6mnbpg888j" path="res://shared/hud.tscn" id="5_0xvba"]
+[ext_resource type="PackedScene" uid="uid://dh3v86eidqtcw" path="res://shared/stars_particles.tscn" id="5_egmoy"]
+[ext_resource type="AudioStream" uid="uid://cto11h57715dh" path="res://assets/sounds/explosion.wav" id="7_gbrmd"]
+[ext_resource type="AudioStream" uid="uid://xdsri7bfexwh" path="res://assets/sounds/levelup.ogg" id="8_bg27g"]
+[ext_resource type="AudioStream" uid="uid://b478k1vtwxuop" path="res://assets/sounds/Coda and Cancel - Turkoid Mix.mp3" id="9_y2ni5"]
+[ext_resource type="PackedScene" uid="uid://cwryt6yfg1p60" path="res://shared/post_processing.tscn" id="12_keikt"]
+
+[sub_resource type="Curve2D" id="Curve2D_rq57f"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 32, 18, 0, 0, 0, 0, 1130, 18, 0, 0, 0, 0, 1135, 626, 0, 0, 0, 0, 20, 626, 0, 0, 0, 0, 18, 20)
+}
+point_count = 5
+
+[node name="Main" type="Node" node_paths=PackedStringArray("rock_follow_path", "player")]
+process_mode = 3
+script = ExtResource("1_5cvw1")
+rock_scene = ExtResource("2_6bjo6")
+rock_follow_path = NodePath("RockPath/RockSpawn")
+player = NodePath("Player")
+enemy_scene = ExtResource("3_fsd8j")
+powerups = Array[PackedScene]([ExtResource("4_qwckn")])
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(577, 325)
+scale = Vector2(0.665, 0.665)
+texture = ExtResource("1_oa6ya")
+
+[node name="StarsParticles" parent="Background" instance=ExtResource("5_egmoy")]
+position = Vector2(581.955, -21.0526)
+
+[node name="Player" parent="." instance=ExtResource("2_i65jl")]
+position = Vector2(582, 328)
+
+[node name="RockPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_rq57f")
+
+[node name="RockSpawn" type="PathFollow2D" parent="RockPath"]
+position = Vector2(32, 18)
+
+[node name="HUD" parent="." instance=ExtResource("5_0xvba")]
+
+[node name="EnemyTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="PowerupSpawnTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[node name="ExplosionSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_gbrmd")
+volume_db = -10.0
+
+[node name="LevelupSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_bg27g")
+volume_db = -6.0
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_y2ni5")
+volume_db = -15.0
+
+[node name="PostProcessing" parent="." instance=ExtResource("12_keikt")]
+
+[connection signal="dead" from="Player" to="." method="game_over"]
+[connection signal="lives_changed" from="Player" to="HUD" method="update_lives"]
+[connection signal="shield_changed" from="Player" to="HUD" method="update_shield"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
+[connection signal="timeout" from="PowerupSpawnTimer" to="." method="_on_powerup_spawn_timer_timeout"]
+[connection signal="finished" from="Music" to="." method="play_music"]
